@@ -86,7 +86,7 @@ HA models retain computational efficiency while supporting the modeling of conti
 
 The heart is represented as an abstracted network of nodes (regional tissue clusters) connected by edges.
 
-![Abstracted_heart_model ](./images/Abstracted_heart_model.png)[[3]](https://doi.org/10.1109/tbme.2019.2917212)
+![Abstracted heart model ](./images/Abstracted heart model.png)[[3]](https://doi.org/10.1109/tbme.2019.2917212)
 
 ### Model Descriptions
 
@@ -136,7 +136,7 @@ Two versions of library exist: **Libs.slx** & **Libs_second.slx** (Seconds) Same
 | **Heart_N3.xlsx** | Contains the parameters of the heart model with simulation time in **milliseconds** |
 | **Heart_N3_second.xlsx** | Contains the parameters of the heart model with simulation time in **seconds** |
 
-#### Notes on Modification from Milliseconds (ms) to Seconds
+#### Notes on Modification from Milliseconds (ms) to Seconds 
 
 The model was originally developed using **milliseconds (ms)** as the simulation time.  
 For hardware integration, it has been modified to use **seconds (s)**. The key modifications are:
@@ -217,7 +217,7 @@ This section describes how to simulate the full heart model operating under its 
 ![action_potentials ](./images/action_potentials.png)
 
 **4. Run a heart model with a pacemaker device**  
-1. Run the following in the Matlab command window:         
+Run the following in the Matlab command window:         
   ```matlab
 >> cd ..
 >> RunCLSfixed     
@@ -226,9 +226,7 @@ This section describes how to simulate the full heart model operating under its 
 In this Heart model GUI ,you can adjust the model settings and pacemaker settings using the drop down menu.
 
 **General Model Settings**
-
 -Time Unit Selection Option :  Second or Millisecond  
-
 -Model Parameter Selection Options  :
 
 | parameter choice   (milisecond)            |**Description** |
@@ -243,9 +241,7 @@ In this Heart model GUI ,you can adjust the model settings and pacemaker setting
 | AV Block             | Blocked AV conduction   |
 
 **Pacemaker Settings**
-
--Options : 
-Full CLSfixed  /  Pacemaker  /  No Pacemaker  
+-Options : Full CLSfixed  /  Pacemaker  /  No Pacemaker  
 
 -Adjustable Pacemaker Time specifications:
 
@@ -257,23 +253,39 @@ Full CLSfixed  /  Pacemaker  /  No Pacemaker
 | VRP       | Ventricular Refractory Period |
 | PVARP     | Post-Ventricular Atrial Refractory Period |
 
-After setting the model and pacemaker choices, you can select one of the following actions to proceed:
+After setting the model and pacemaker options, you can select one of the following actions to proceed with closed-loop validation platform:
+    - [Close GUI with Current Settings](#close_gui_with_current_settings)
+    - [Edit Model Network](#edit_model_network)
+    - [Tutorial](#tutorial)
 
-**1.Close GUI with Current Settings** - Generates the closed-loop validation platform and runs intracardiac EGM simulations 
+![closedloopvalidationplatformV](./images/closedloopvalidationplatformV.mp4)
+
+**Close GUI with Current Settings** 
+This generates the closed-loop validation platform and runs intracardiac EGM simulations. 
 ![closedloopvalidationplatform](./images/closedloopvalidationplatform.png)   
-**2.Edit Model Network** - Modify parameters, nodes, or conduction paths before EGM generation
-![editmodelnetwork](./images/editmodelnetwork.png)  
-**3.Tutorial** -  Explore guided examples 
-	     
-2. In the GUI, enter the simulation time (ms) in the Operations panel on the left.     		 
-3. Click "Start" within Operations panel.
+
+In the GUI, enter the simulation time (ms) in the Operations panel on the left. Click "Start" within Operations panel.
 The electrical activations of the cardiac conduction system is shown on the left and the EGMs are displayed on the right.  
-Here the Red triangles denote depolarization and red diamonds denote depolarization in the opposite direction. 
-Blue triangles denote repolarization and blue diamonds denote repolarization in the opposite direction. 
-
+Here the Red triangles denote depolarization and red diamonds denote depolarization in the opposite direction. Blue triangles denote repolarization and blue diamonds denote repolarization in the opposite direction. 
 Playback panel can be used to load and run a cell model in the closed loop validation platform.
-4. Click "Stop" within Operations panel and close the GUI window.  
+At the end, Click "Stop" within Operations panel and close the GUI window.  
 
+**Edit Model Network** - Modify parameters, nodes, or conduction paths before EGM generation
+![editmodelnetwork](./images/editmodelnetwork.png) 
+To edit node attributes, click “Select Node” and choose the node you want to modify. The node type will be displayed, and you can change its attributes accordingly. After updating or resetting the values, you can view the node’s action potential and compare it with the default node’s action potential.
+![editmodelnode](./images/editmodelnode.png) 
+To edit path attributes, click “Select Path” and choose the path you want to modify. The path connecting nodes will be displayed, and you can change path attributes accordingly. 
+![editmodelpath](./images/editmodelpath.png) 
+To create a new node, click Select Location and then click on the desired position in the cardiac conduction model where you want to place the node. After placing the node, you can assign its attributes by selecting from the drop-down menu of preset node types.
+To delete an existing node, click "Select Node for deletion" and then select the node from the system you want to remove.
+![editmodelnodecreate](./images/editmodelnodecreate.png) 
+To create a new path, click Select Node 1 and choose the starting node of the path. Then click Select Node 2 and select the ending node. After defining the path, assign its attributes using the Path Preset drop-down menu.
+To delete an existing path, click Select Path for Deletion and select the path you want to remove from the model.
+![editmodelpathcreate](./images/editmodelpathcreate.png) 
+After editing the model, you can save it. You will then be redirected to the [Closed-Loop Validation Platform System](#close_gui_with_current_settings)
+
+**Tutorial** -  Explore guided examples 
+	     
 **5. Build a new heart model**           
 This section explains how to build a new heart model using the [`PreBuild.m`](./src/PreBuild.m).
 To build a new heart model, update the Excel configuration file (nodes, paths, probes, and parameters), set the correct root and library paths, and assign a unique model name. Then run the prebuild script.
@@ -333,6 +345,4 @@ To build a new heart model, update the Excel configuration file (nodes, paths, p
 Version 1 is posted on the public GitHub repository. Copyright 2019 Weiwei Ai, wai484@aucklanduni.ac.nz, The University of Auckland, under license GPL version 
 * July 29, 2025  
 Change the license to Apache-2.0
-
-
 
