@@ -183,12 +183,18 @@ Pacemaker cells can initiate action potentials without external stimulation.
 ```
 2.Once the simulation finishes, click the scope to view the output trace. 
 	
-![SAN Action Potential](./images/SA_AP.png)![AVN Action Potential](./images/AVN_AP.png)![HPS Action Potential](./images/HPS_AP.png)
+![SAN Action Potential](./images/SA_AP.png)
+
+![AVN Action Potential](./images/AVN_AP.png)
+
+![HPS Action Potential](./images/HPS_AP.png)
 
 **2. Overdrive suppression simulation**
 
 If a pacemaker cell is depolarized at a higher frequency than its intrinsic rate, its automaticity may be suppressed, which is known as overdrive suppression.
+
 ![Overdrive suppression ](./images/Overdrive_suppression.png)
+
 Here an external stimuli is applied to a pacemaker cell to demonstrate this effect.  
 The model **AV.slx** is preconfigured with a pulse input, and the script **simAV_Trace.m** is provided to run the simulation.
 
@@ -253,15 +259,16 @@ In this Heart model GUI ,you can adjust the model settings and pacemaker setting
 | VRP       | Ventricular Refractory Period |
 | PVARP     | Post-Ventricular Atrial Refractory Period |
 
-After setting the model and pacemaker options, you can select one of the following actions to proceed with closed-loop validation platform:
-    - [Close GUI with Current Settings](#close_gui_with_current_settings)
-    - [Edit Model Network](#edit_model_network)
-    - [Tutorial](#tutorial)
+After setting the model and pacemaker options, you can select one of the following actions to proceed with closed-loop validation platform:<br>
+    - [Close GUI with Current Settings](#close_gui_with_current_settings) <br>
+    - [Edit Model Network](#edit_model_network)<br>
+    - [Tutorial](#tutorial)<br>
 
 ![closedloopvalidationplatformV](./images/closedloopvalidationplatformV.mp4)
 
 **Close GUI with Current Settings** 
 This generates the closed-loop validation platform and runs intracardiac EGM simulations. 
+
 ![closedloopvalidationplatform](./images/closedloopvalidationplatform.png)   
 
 In the GUI, enter the simulation time (ms) in the Operations panel on the left. Click "Start" within Operations panel.
@@ -271,18 +278,29 @@ Playback panel can be used to load and run a cell model in the closed loop valid
 At the end, Click "Stop" within Operations panel and close the GUI window.  
 
 **Edit Model Network** - Modify parameters, nodes, or conduction paths before EGM generation
+
 ![editmodelnetwork](./images/editmodelnetwork.png) 
+
 To edit node attributes, click “Select Node” and choose the node you want to modify. The node type will be displayed, and you can change its attributes accordingly. After updating or resetting the values, you can view the node’s action potential and compare it with the default node’s action potential.
+
 ![editmodelnode](./images/editmodelnode.png) 
+
 To edit path attributes, click “Select Path” and choose the path you want to modify. The path connecting nodes will be displayed, and you can change path attributes accordingly. 
+
 ![editmodelpath](./images/editmodelpath.png) 
+
 To create a new node, click Select Location and then click on the desired position in the cardiac conduction model where you want to place the node. After placing the node, you can assign its attributes by selecting from the drop-down menu of preset node types.
 To delete an existing node, click "Select Node for deletion" and then select the node from the system you want to remove.
+
 ![editmodelnodecreate](./images/editmodelnodecreate.png) 
+
 To create a new path, click Select Node 1 and choose the starting node of the path. Then click Select Node 2 and select the ending node. After defining the path, assign its attributes using the Path Preset drop-down menu.
 To delete an existing path, click Select Path for Deletion and select the path you want to remove from the model.
+
 ![editmodelpathcreate](./images/editmodelpathcreate.png) 
-After editing the model, you can save it. You will then be redirected to the [Closed-Loop Validation Platform System](#close_gui_with_current_settings)
+
+After editing the model, you can save it.
+<br>You will then be redirected to the [Closed-Loop Validation Platform System](#close_gui_with_current_settings)
 
 **Tutorial** -  Explore guided examples 
 	     
@@ -345,5 +363,6 @@ To build a new heart model, update the Excel configuration file (nodes, paths, p
 Version 1 is posted on the public GitHub repository. Copyright 2019 Weiwei Ai, wai484@aucklanduni.ac.nz, The University of Auckland, under license GPL version 
 * July 29, 2025  
 Change the license to Apache-2.0
+
 
 
