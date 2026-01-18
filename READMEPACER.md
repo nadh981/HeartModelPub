@@ -1,6 +1,15 @@
-# HeartModelPub
 
-![pacer LOGO ](./images/pacer2.png)
+<h1>
+<span style="color:#e63946">P</span>aced
+<span style="color:#e63946">A</span>utomata model for
+<span style="color:#e63946">C</span>ardiac
+<span style="color:#e63946">E</span>lectrophysiology in
+<span style="color:#e63946">R</span>eal-time
+</h1>
+
+<p align="center">
+  <img src="./images/pacer2.png" alt="pacer LOGO" width="60%">
+</p> 
 
 HeartModelPub provides a computational heart model for simulating cardiac electrophysiology and testing implantable pacemaker devices in closed-loop scenarios.
 
@@ -20,16 +29,22 @@ Last updated: November 28, 2025.
 
 >© Copyright 2025 Weiwei Ai, wai484@aucklanduni.ac.nz, The University of Auckland 
 
->   Licensed under the Apache License, Version 2.0 (the "License");you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
+>   Licensed under the Apache License, Version 2.0 (the "License" ); you may not use this file except in compliance with the License. You may obtain a copy of the License at http://www.apache.org/licenses/LICENSE-2.0
 >
 >   Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 >   See the License for the specific language governing permissions and limitations under the License.
 
-[![License: Apache 2.0](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](http://www.apache.org/licenses/LICENSE-2.0)
-
-[![View on MATLAB File Exchange](https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg)](https://au.mathworks.com/matlabcentral/fileexchange/154301-heartmodelpub/)
-
-[![View on GitHub](https://img.shields.io/badge/GitHub-Repository-black?logo=github)](https://github.com/PRETgroup/HeartModelPub)
+<p align="center">
+  <a href="http://www.apache.org/licenses/LICENSE-2.0">
+    <img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg">
+  </a>
+  <a href="https://au.mathworks.com/matlabcentral/fileexchange/154301-heartmodelpub/">
+    <img src="https://www.mathworks.com/matlabcentral/images/matlab-file-exchange.svg">
+  </a>
+  <a href="https://github.com/PRETgroup/HeartModelPub">
+    <img src="https://img.shields.io/badge/GitHub-Repository-black?logo=github">
+  </a>
+</p>
 
 ---
 
@@ -85,7 +100,9 @@ HA models retain computational efficiency while supporting the modeling of conti
 
 The heart is represented as an abstracted network of nodes (regional tissue clusters) connected by edges.
 
-![Abstracted heart model ](./images/Abstracted_heart_model.png)[[3]](https://doi.org/10.1109/tbme.2019.2917212)
+<p align="center">
+  <img src="./images/Abstracted_heart_model.png" alt="Abstracted heart model" width="60%">
+</p> 
 
 ### Model Descriptions
 
