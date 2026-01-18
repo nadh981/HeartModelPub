@@ -42,28 +42,27 @@ Last updated: November 28, 2025.
        - [Scripts](#Scripts)
        - [Parameter files ](#Parameter-files)
    
-2. [Getting Started](#getting-started)
-   - [Setup Instructions](#Add-the-library-files-to-the-path) 
-   - [Run model simulations](#Run-model-simulations)
-   
-3. [Cell Models](#cell-models)
+2. [Cell Models](#cell-models)
    - [Cell Types Overview](#cell-types-overview)
    - [Pacemaker Cells (Type N)](#pacemaker-cells-type-n)
    - [Myocytes (Type M)](#myocytes-type-m)
    - [Subsidiary Pacemakers (Type NM)](#subsidiary-pacemakers-type-nm)
 
-4. [Heart Model](#heart-model)
+3. [Path Model](#path-model)
  
-5. [Device Testing & Validation](#device-testing--validation)
-   - [Closed-Loop Validation](#closed-loop-validation)
-   - [DDD Pacemaker Mode](#ddd-pacemaker-mode)
+4. [Closed Loop System](#closed-loop-system)
+    - [Pacemaker Model](#pacemaker-model)
+   
+5. [Getting Started](#getting-started)
+   - [Setup Instructions](#Add-the-library-files-to-the-path) 
+   - [Run model simulations](#Run-model-simulations)
 
-6. [Examples & Tutorials](#examples--tutorials)
-   - [Example 1: Simple Pacemaker Cell](#example-1-simple-pacemaker-cell)
-   - [Example 2: Overdrive Suppression](#example-2-overdrive-suppression)
-   - [Example 3: Heart Simulation](#example-3-heart-simulation)
-   - [Example 4: Closed-Loop Device Testing](#example-4-closed-loop-device-testing)
-   - [Example 5: Custom Model Building](#example-5-custom-model-building)
+6. [Examples](#examples)
+   - [Example 1: ](#example-1)
+   - [Example 2: ](#example-2)
+   - [Example 3: ](#example-3)
+   - [Example 4: ](#example-4)
+   - [Example 5: ](#example-5)
 
 7. [Need-to-Know](#need-to-know)
 
@@ -86,7 +85,7 @@ HA models retain computational efficiency while supporting the modeling of conti
 
 The heart is represented as an abstracted network of nodes (regional tissue clusters) connected by edges.
 
-![Abstracted heart model ](./images/Abstracted_heart_model.png)[[3]](https://doi.org/10.1109/tbme.2019.2917212)
+![Abstracted heart model ](./images/Abstracted heart model.png)[[3]](https://doi.org/10.1109/tbme.2019.2917212)
 
 ### Model Descriptions
 
@@ -154,9 +153,108 @@ For hardware integration, it has been modified to use **seconds (s)**. The key m
   Remain the same (use ms).
 - Use **Heart_N3_second.xlsx**, which contains modified parameters for simulation time in seconds.
 
+## Cell Models
+
+Cell model is developed as a computational HA pacemaker cell model with the ability to efficiently describe dynamic electrical behaviors and adaptation to pacing frequency, and compares.
+The HA model can be parameterized to capture the features of different cardiac pacemaker cells.
+
+### Cell Types Overview
+
+The cardiac conduction system is represented using three main cell types:
+  1. Pacemaker Cells (Type N)
+      Cells with intrinsic automaticity that spontaneously initiate action potentials.
+  2. Myocytes (Type M)
+      Contractile myocardial cells that propagate electrical signals but do not normally self-excite.
+  3. Subsidiary Pacemakers (Type NM)
+      Cells that combine automaticity with fast-response conduction behavior.
+
+Together these cell types form a modular and extensible heart model capable of reproducing normal rhythm formation as well as pathological pacing scenarios.
+
+### Pacemaker Cells (Type N)
+
+Pacemaker cells represent autorhythmic cells found in regions such as the sinoatrial node (SAN) and atrioventricular node (AVN). These cells are capable of spontaneously generating action potentials without external stimulation, with the SAN acting as the dominant intrinsic pacemaker under normal conditions.
+In the model, pacemaker cells:
+-Exhibit automaticity through slow diastolic depolarization
+-Support rate adaptation and overdrive suppression
+-Capture key refractory behaviors relevant to rhythm control
+-Can be influenced by electrical stimuli from neighboring cells or pacing devices
+
+The following figure shows the HA state flow chart of nodal type cell capture the distinct phases of the cardiac action potential.
+Complex ionic dynamics are abstracted into a small set of continuous variables and discrete states.
+
+![node_n_ha](./images/node_n_ha.png) 
+
+It consists of four discrete states corresponding to the phases of the nodal action potential:
+- Slow Depolarization (Phase 4)
+    Represents spontaneous diastolic depolarization and is responsible for the intrinsic automaticity of pacemaker cells.
+- Upstroke (Phase 0)
+    Models rapid depolarization initiated either spontaneously or by external electrical stimulation.
+- Plateau& Early Repolarization (Phase 2)
+    Captures sustained depolarization following excitation.
+- Final Repolarization (Phase 3)
+    Represents voltage recovery back to the maximal diastolic potential before the next pacing cycle.
+
+State transitions are governed by voltage thresholds, refractory conditions, and interactions with neighboring cells.
+
+### Myocytes (Type M)
+
+Myocytes represent atrial and ventricular myocardial cells responsible for electrical conduction and mechanical contraction. Unlike pacemaker cells, myocytes do not normally initiate action potentials on their own and instead respond to incoming electrical stimuli.
+In the model, myocytes:
+ - Propagate action potentials through conduction pathways
+ - Exhibit fast-response electrical behavior
+These cells form the most of the cardiac conduction network.
+
+![node_m_ha](./images/node_m_ha.png) 
+
+The above figure shows the myocyte HA cell model  which also consists of four discrete states corresponding to the major phases of the action potential:
+-  Resting / Final Repolarization(Phase 0)
+-  Stimulated (Phase 1)
+-  Upstroke (Phase 2)
+-  Plateau / Early Repolarization (Phase 3)
+
+### Subsidiary Pacemakers (Type NM)
+
+Subsidiary Pacemakers Cells exhibit hybrid behaviour: behave electrophysiologically like cardiomyocytes with fast-response conduction behavior, while also possessing intrinsic automaticity similar to nodal pacemaker cells.
+To capture this behavior, the Type NM cell is modeled by composing a nodal pacemaker cell with a fast-response cardiomyocyte.
+
+The model consists of:
+ - Cell A (nodal): Provides intrinsic pacemaking
+ - Cell C (cardiomyocyte): Generates the observable action potential
+Both cells are connected by a path with zero propagation delay. External stimulation is applied only to Cell C, while Cell A interacts solely through internal electrical coupling.
+
+Functional Behavior:
+ 1. Low or absent external stimulation:
+     Pacemaking originates from Cell A and activates Cell C.
+ 2. High-rate external stimulation:
+     Cell C is directly driven by the stimulus, suppressing Cell A through overdrive inhibition.
+
+This configuration preserves fast-response action potential dynamics, APD restitution, and rate-dependent suppression of automaticity, consistent with physiological subsidiary pacemakers.
+
+## Path Model
+
+Nodes in the heart model are connected using a time-delayed path model that captures the characteristics of action potential propagation in cardiac tissue.
+Each path models the electrical coupling between two nodes and determines whether an activation propagates from node i to node j (or vice versa) after a conduction delay. The propagation direction depends on activation timing, conduction velocity, and the refractory state of the connected cells.
+
+![path_ha](./images/path_ha.png) 
+
+The path model is implemented as a hybrid automaton (HA) as showen in the above figure.
+which;
+   - Selects the propagation direction based on activation timing
+   - Enforces refractory constraints at the receiving node
+   - Detects and annihilates colliding action potentials
+   - Prevents bidirectional feedback
+
+Path model accurately captures:Directional conduction, Conduction block, Action potential collision and annihilation, Rate-dependent propagation delays
+By replacing long chains of cells with efficient path abstractions, the model enables scalable, real-time simulation of large cardiac conduction networks for closed-loop pacemaker validation.
+ 
+## Closed Loop System
+### Pacemaker Model
+
+The closed-loop system integrates a DDD-mode pacemaker model with the virtual heart model to enable realistic device testing and simulation. The pacemaker senses atrial and ventricular activity through intracardiac electrograms (EGMs) generated by the heart model and delivers pacing stimuli when intrinsic activity is absent or insufficient.
+
+The model supports dual-chamber sensing and pacing, atrioventricular timing control, refractory period enforcement, and rate limits, allowing evaluation of pacemaker behavior under both normal and pathological cardiac conditions. This closed-loop coupling enables in-silico validation of sensing, pacing, and timing logic in response to dynamic cardiac electrophysiology.
 
 ## Getting Started  
-
 ### Add the library files to the path
 
 Before running any simulations, add all library files to the MATLAB® search path for the current session. This ensures that all models, scripts, and utility functions are accessible. Run:
@@ -183,11 +281,7 @@ Pacemaker cells can initiate action potentials without external stimulation.
 ```
 2.Once the simulation finishes, click the scope to view the output trace. 
 	
-![SAN Action Potential](./images/SA_AP.png)
-
-![AVN Action Potential](./images/AVN_AP.png)
-
-![HPS Action Potential](./images/HPS_AP.png)
+![SAN Action Potential](./images/SA_AP.png)![AVN Action Potential](./images/AVN_AP.png)![HPS Action Potential](./images/HPS_AP.png)
 
 **2. Overdrive suppression simulation**
 
@@ -232,6 +326,7 @@ Run the following in the Matlab command window:
 In this Heart model GUI ,you can adjust the model settings and pacemaker settings using the drop down menu.
 
 **General Model Settings**
+
 -Time Unit Selection Option :  Second or Millisecond  
 -Model Parameter Selection Options  :
 
@@ -247,6 +342,7 @@ In this Heart model GUI ,you can adjust the model settings and pacemaker setting
 | AV Block             | Blocked AV conduction   |
 
 **Pacemaker Settings**
+
 -Options : Full CLSfixed  /  Pacemaker  /  No Pacemaker  
 
 -Adjustable Pacemaker Time specifications:
@@ -259,16 +355,16 @@ In this Heart model GUI ,you can adjust the model settings and pacemaker setting
 | VRP       | Ventricular Refractory Period |
 | PVARP     | Post-Ventricular Atrial Refractory Period |
 
-After setting the model and pacemaker options, you can select one of the following actions to proceed with closed-loop validation platform:<br>
-    - [Close GUI with Current Settings](#close_gui_with_current_settings) <br>
-    - [Edit Model Network](#edit_model_network)<br>
-    - [Tutorial](#tutorial)<br>
+After setting the model and pacemaker options, you can select one of the following actions to proceed with closed-loop validation platform:
+    - [Close GUI with Current Settings](#close_gui_with_current_settings)
+    - [Edit Model Network](#edit_model_network)
+    - [Tutorial](#tutorial)
 
 ![closedloopvalidationplatformV](./images/closedloopvalidationplatformV.mp4)
 
 **Close GUI with Current Settings** 
-This generates the closed-loop validation platform and runs intracardiac EGM simulations. 
 
+This generates the closed-loop validation platform and runs intracardiac EGM simulations. 
 ![closedloopvalidationplatform](./images/closedloopvalidationplatform.png)   
 
 In the GUI, enter the simulation time (ms) in the Operations panel on the left. Click "Start" within Operations panel.
@@ -280,49 +376,26 @@ At the end, Click "Stop" within Operations panel and close the GUI window.
 **Edit Model Network** - Modify parameters, nodes, or conduction paths before EGM generation
 
 ![editmodelnetwork](./images/editmodelnetwork.png) 
-
 To edit node attributes, click “Select Node” and choose the node you want to modify. The node type will be displayed, and you can change its attributes accordingly. After updating or resetting the values, you can view the node’s action potential and compare it with the default node’s action potential.
-
 ![editmodelnode](./images/editmodelnode.png) 
-
 To edit path attributes, click “Select Path” and choose the path you want to modify. The path connecting nodes will be displayed, and you can change path attributes accordingly. 
-
 ![editmodelpath](./images/editmodelpath.png) 
-
 To create a new node, click Select Location and then click on the desired position in the cardiac conduction model where you want to place the node. After placing the node, you can assign its attributes by selecting from the drop-down menu of preset node types.
 To delete an existing node, click "Select Node for deletion" and then select the node from the system you want to remove.
-
 ![editmodelnodecreate](./images/editmodelnodecreate.png) 
-
 To create a new path, click Select Node 1 and choose the starting node of the path. Then click Select Node 2 and select the ending node. After defining the path, assign its attributes using the Path Preset drop-down menu.
 To delete an existing path, click Select Path for Deletion and select the path you want to remove from the model.
-
 ![editmodelpathcreate](./images/editmodelpathcreate.png) 
-
-After editing the model, you can save it.
-<br>You will then be redirected to the [Closed-Loop Validation Platform System](#close_gui_with_current_settings)
+After editing the model, you can save it. You will then be redirected to the [Closed-Loop Validation Platform System](#close_gui_with_current_settings)
 
 **Tutorial** -  Explore guided examples 
 	     
 **5. Build a new heart model**           
+
 This section explains how to build a new heart model using the [`PreBuild.m`](./src/PreBuild.m).
 To build a new heart model, update the Excel configuration file (nodes, paths, probes, and parameters), set the correct root and library paths, and assign a unique model name. Then run the prebuild script.
 
-
-## Cell Models
-### Cell Types Overview
-### Pacemaker Cells (Type N)
-### Myocytes (Type M)
-### Subsidiary Pacemakers (Type NM)
-
-## Heart Model
-
- 
-## Device Testing & Validation
-### Closed-Loop Validation
-### DDD Pacemaker Mode
-
-## Examples & Tutorials
+## Examples 
 ### Example 1: 
 ### Example 2: 
 ### Example 3: 
@@ -331,6 +404,7 @@ To build a new heart model, update the Excel configuration file (nodes, paths, p
 
 
 ## References
+
  **Pacemaker cell models**:  
 [1] Ai, Weiwei, et al. "A parametric computational model of the action potential of pacemaker cells." IEEE Transactions on Biomedical Engineering 65.1 (2017): 123-130.  
 **Cardiomyocytes**:     
@@ -349,20 +423,24 @@ To build a new heart model, update the Excel configuration file (nodes, paths, p
 [9] Chen, Taolue, et al. "Quantitative verification of implantable cardiac pacemakers over hybrid heart models." Information and Computation 236 (2014): 87-101.  
 [10] Jiang, Zhihao, Miroslav Pajic, and Rahul Mangharam. "Cyber–physical modeling of implantable cardiac medical devices." Proceedings of the IEEE 100.1 (2011): 122-137.  
 [11] Pajic, Miroslav, et al. "From verification to implementation: A model translation tool and a pacemaker case study." 2012 IEEE 18th Real Time and Embedded Technology and Applications Symposium. IEEE, 2012.   
+
 ## Acknowledgment
+
 1. The cardiomyocytes model [2] is based on the work [8] and the initial Simulink implementaion is from the Oxford group [9].
 2. The initial topology of the cardiac conduction system [3] is from the work [10].
 3. The DDD pacemaker is modified based on a published model [11].
+
 ## Need-to-know
+
 * In the path model, only the voltage during q3 contribute to the activation of its neighbouring cells, which is an approximation.
 * If the action potential of a cardiomyocyte is greater than the VO during q3 location at given parameters, e.g., out of the physiological range, the output would be saturated to VO. A better saturation approach can be found in the references [5,6], which only saturates the overshoot at the end of q2.
 * The models are implemented to facilitate parameterization. The parameters can be updated at run time. For fixed parameters application, the implementation can be simplified. Please refer to the papers [1-4] for the model descriptions.
 * The GUI is not fully tested.
+
 ## License History
+
 * October 9, 2019  
 Version 1 is posted on the public GitHub repository. Copyright 2019 Weiwei Ai, wai484@aucklanduni.ac.nz, The University of Auckland, under license GPL version 
 * July 29, 2025  
 Change the license to Apache-2.0
-
-
 
