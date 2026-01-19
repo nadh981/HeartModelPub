@@ -8,7 +8,7 @@
 </h1>
 
 <p align="center">
-  <img src="./images/pacer2.png" alt="pacer LOGO" width="60%">
+  <img src="./images/pacer.png" alt="pacer LOGO" width="50%">
 </p> 
 
 HeartModelPub provides a computational heart model for simulating cardiac electrophysiology and testing implantable pacemaker devices in closed-loop scenarios.
@@ -107,14 +107,15 @@ The heart is represented as an abstracted network of nodes (regional tissue clus
 ### Model Descriptions
 
 The heart model is organized into libraries, models, and scripts. Each component is designed for specific role.  
-- The **Lib/** folder contains the core component libraries, including cellular models (pacemaker, myocyte, and subsidiary pacemaker cells), conduction paths, EGM sensing modules, and pacemaker devices, with separate versions for millisecond- and second-based simulations. 
-- The **models/**  provides pre-built examples, ranging from single-cell pacemaker models to full heart simulations, allowing users to quickly run simulations or test specific scenarios. 
-- For more detailed or high-resolution variants, the **models_refine/**  contains complex heart models with increased numbers of nodes and paths. 
-- The **src/**  hosts all utility scripts, including automatic model builders, configuration processors, GUI tools, plotting functions, and parameter generators, enabling users to customize and automate simulations. 
+- The [Lib ](./Lib/) folder contains the core component libraries, including cellular models (pacemaker, myocyte, and subsidiary pacemaker cells), conduction paths, EGM sensing modules, and pacemaker devices, with separate versions for millisecond- and second-based simulations. 
+- The [models ](./models/) provides pre-built examples, ranging from single-cell pacemaker models to full heart simulations, allowing users to quickly run simulations or test specific scenarios. 
+- For more detailed or high-resolution variants, the [models_refine ](./models_refine/) contains complex heart models with increased numbers of nodes and paths. 
+- The [src ](./src/) hosts all utility scripts, including automatic model builders, configuration processors, GUI tools, plotting functions, and parameter generators, enabling users to customize and automate simulations. 
 
 #### Model Libraries
 
-Two versions of library exist: **Libs.slx** & **Libs_second.slx** (Seconds) Same components but adapted for second based simulation for hardware integration ([Notes on Modification from Milliseconds (ms) to Seconds](#notes-on-modification-from-milliseconds-ms-to-seconds)).
+Two versions of library exist:  [Libs.slx](./Lib/Libs.slx) & [Libs_second.slx](./Lib/Libs_second.slx)
+<br> Same components but adapted for second based simulation for hardware integration ([Notes on Modification from Milliseconds (ms) to Seconds](#notes-on-modification-from-milliseconds-ms-to-seconds)).
 
 #### Model Libraries
 
@@ -199,7 +200,9 @@ In the model, pacemaker cells:
 The following figure shows the HA state flow chart of nodal type cell capture the distinct phases of the cardiac action potential.
 Complex ionic dynamics are abstracted into a small set of continuous variables and discrete states.
 
-![node_n_ha](./images/node_n_ha.png) 
+<p align="center">
+  <img src="./images/node_n_ha.png" alt="node_n_ha" width="90%">
+</p> 
 
 It consists of four discrete states corresponding to the phases of the nodal action potential:
 - Slow Depolarization (Phase 4)
@@ -221,7 +224,9 @@ In the model, myocytes:
  - Exhibit fast-response electrical behavior
 These cells form the most of the cardiac conduction network.
 
-![node_m_ha](./images/node_m_ha.png) 
+<p align="center">
+  <img src="./images/node_m_ha.png" alt="node_m_ha" width="90%">
+</p> 
 
 The above figure shows the myocyte HA cell model  which also consists of four discrete states corresponding to the major phases of the action potential:
 -  Resting / Final Repolarization(Phase 0)
@@ -252,10 +257,12 @@ This configuration preserves fast-response action potential dynamics, APD restit
 Nodes in the heart model are connected using a time-delayed path model that captures the characteristics of action potential propagation in cardiac tissue.
 Each path models the electrical coupling between two nodes and determines whether an activation propagates from node i to node j (or vice versa) after a conduction delay. The propagation direction depends on activation timing, conduction velocity, and the refractory state of the connected cells.
 
-![path_ha](./images/path_ha.png) 
+<p align="center">
+  <img src="./images/path_ha.png" alt="path_ha" width="90%">
+</p> 
 
-The path model is implemented as a hybrid automaton (HA) as showen in the above figure.
-which;
+The path model is implemented as a hybrid automaton (HA) as showen in the above figure.<br>
+which ;
    - Selects the propagation direction based on activation timing
    - Enforces refractory constraints at the receiving node
    - Detects and annihilates colliding action potentials
@@ -280,7 +287,7 @@ Before running any simulations, add all library files to the MATLAB® search pat
 ```
 ### Run model simulations  
 
-All the running examples are under the directory *models* or *models_refine*, firstly go to the directory by clicking the folder or running the following in the Matlab command window:     
+All the running examples are under the directory [models](./models/) or [models_refine](./models_refine/), firstly go to the directory by clicking the folder or running the following in the Matlab command window:     
 ```matlab
 >> cd models
 ```
@@ -288,7 +295,10 @@ All the running examples are under the directory *models* or *models_refine*, fi
 
 Pacemaker cells can initiate action potentials without external stimulation.
 
- In the folder, there are three pacemaker cell models: <BR/>(1) SA node model "**SAcell.slx**",<BR/>(2) AV node model "**CNcell.slx**", and <BR/> (3) His-Purkinje fibre cell "**HPScell.slx**".
+ In the folder, there are three pacemaker cell models: 
+ <BR/>(1) SA node model - [`SAcell.slx`](./models/SAcell.slx),
+ <BR/>(2) AV node model - [`CNcell.slx`](./models/CNcell.slx), and 
+ <BR/> (3) His-Purkinje fibre cell model - [`HPScellV.slx`](./models/HPScell.slx).
 
  To simulate the models: <BR/> 1.Open a cell model and click "Run" button in Simulink or run the simulation using the Matlab commands:
 
@@ -298,22 +308,27 @@ Pacemaker cells can initiate action potentials without external stimulation.
 ```
 2.Once the simulation finishes, click the scope to view the output trace. 
 	
-![SAN Action Potential](./images/SA_AP.png)![AVN Action Potential](./images/AVN_AP.png)![HPS Action Potential](./images/HPS_AP.png)
+
+<div style="display: flex; justify-content: center; gap: 20px; align-items: center;">
+  <img src="./images/SA_AP.png" alt="SA_AP" width="60%">
+</div>
 
 **2. Overdrive suppression simulation**
 
 If a pacemaker cell is depolarized at a higher frequency than its intrinsic rate, its automaticity may be suppressed, which is known as overdrive suppression.
 
-![Overdrive suppression ](./images/Overdrive_suppression.png)
+<p align="center">
+  <img src="./images/Overdrive_suppression.png" alt="Overdrive suppression " width="60%">
+</p> 
 
 Here an external stimuli is applied to a pacemaker cell to demonstrate this effect.  
-The model **AV.slx** is preconfigured with a pulse input, and the script **simAV_Trace.m** is provided to run the simulation.
+The model The model [`AV.slx`](./models/AV.slx) is preconfigured with a pulse input, and the script [`simAV_Trace.m`](./models/simAV_Trace.m) is provided to run the simulation.
 
 1.Run the following in the Matlab command window:  
 ```matlab
 >> simAV_Trace
 ```
-2.Once the simulation finishes, **Plottrace.m** can be used to plot the simulation traces:       
+2.Once the simulation finishes, [`Plottrace.m`](./models/Plottrace.m) can be used to plot the simulation traces:       
 ```matlab
 >> Plottrace 
 ```
@@ -321,7 +336,7 @@ The model **AV.slx** is preconfigured with a pulse input, and the script **simAV
 
 This section describes how to simulate the full heart model operating under its intrinsic rhythm, without any external pacing stimulation.
 
-1.Open HeartExe.slx and click "Run" in Simulink, or run the following in the Matlab command window:     
+1.Open [`HeartExe.slx`](./models/HeartExe.slx) and click "Run" in Simulink, or run the following in the Matlab command window:     
 ```matlab
 >>open('HeartExe.slx')
 >>sim('HeartExe.slx')
@@ -331,7 +346,9 @@ This section describes how to simulate the full heart model operating under its 
 >> load('Cells.mat')     
 >> plotCells
 ```
-![action_potentials ](./images/action_potentials.png)
+<p align="center">
+  <img src="./images/action_potentials.png" alt="action_potentials" width="40%">
+</p> 
 
 **4. Run a heart model with a pacemaker device**  
 Run the following in the Matlab command window:         
@@ -339,8 +356,12 @@ Run the following in the Matlab command window:
 >> cd ..
 >> RunCLSfixed     
 ```
-![runclsfixed](./images/RunCLSfixed.png) 
-In this Heart model GUI ,you can adjust the model settings and pacemaker settings using the drop down menu.
+<p align="center">
+  <img src="./images/RunCLSfixed.png" alt="runclsfixed" width="90%">
+</p> 
+
+In this Heart model GUI,<br>
+You can adjust the model settings and pacemaker settings using the drop down menu.
 
 **General Model Settings**
 
@@ -364,27 +385,35 @@ In this Heart model GUI ,you can adjust the model settings and pacemaker setting
 
 -Adjustable Pacemaker Time specifications:
 
-| Parameter | Description |
-|-----------|-------------|
-| LRI       | Lower Rate Interval |
-| AVI       | Atrioventricular Interval |
-| URI       | Upper Rate Interval |
-| VRP       | Ventricular Refractory Period |
-| PVARP     | Post-Ventricular Atrial Refractory Period |
+| Parameter   | Description |
+|-------------|-------------|
+| LRI         | Lower Rate Interval    |
+| AVI         | Atrioventricular Interval    |
+| URI         | Upper Rate Interval |
+| VRP         | Ventricular Refractory Period |
+| PVARP       | Post-Ventricular Atrial Refractory Period |
 
-After setting the model and pacemaker options, you can select one of the following actions to proceed with closed-loop validation platform:
-    - [Close GUI with Current Settings](#close_gui_with_current_settings)
-    - [Edit Model Network](#edit_model_network)
-    - [Tutorial](#tutorial)
+After setting the model and pacemaker options, you can select one of the following actions to proceed with the closed-loop validation platform:
+- [Close GUI with Current Settings](#close-gui-with-current-settings)
+- [Edit Model Network](#edit-model-network)
+   
 
-![closedloopvalidationplatformV](./images/closedloopvalidationplatformV.mp4)
+<p align="center"> 
+  <video width="900%" controls>
+    <source src="./images/closedloopvalidationplatformV.mp4" type="video/mp4">
+     </video>
+</p>
 
 **Close GUI with Current Settings** 
 
 This generates the closed-loop validation platform and runs intracardiac EGM simulations. 
-![closedloopvalidationplatform](./images/closedloopvalidationplatform.png)   
 
-In the GUI, enter the simulation time (ms) in the Operations panel on the left. Click "Start" within Operations panel.
+<p align="center">
+  <img src="./images/closedloopvalidationplatform.png" alt="closedloopvalidationplatform" width="60%">
+</p> 
+
+In the GUI, 
+<br>Enter the simulation time (ms) in the Operations panel on the left. Click "Start" within Operations panel.
 The electrical activations of the cardiac conduction system is shown on the left and the EGMs are displayed on the right.  
 Here the Red triangles denote depolarization and red diamonds denote depolarization in the opposite direction. Blue triangles denote repolarization and blue diamonds denote repolarization in the opposite direction. 
 Playback panel can be used to load and run a cell model in the closed loop validation platform.
@@ -392,20 +421,38 @@ At the end, Click "Stop" within Operations panel and close the GUI window.
 
 **Edit Model Network** - Modify parameters, nodes, or conduction paths before EGM generation
 
-![editmodelnetwork](./images/editmodelnetwork.png) 
-To edit node attributes, click “Select Node” and choose the node you want to modify. The node type will be displayed, and you can change its attributes accordingly. After updating or resetting the values, you can view the node’s action potential and compare it with the default node’s action potential.
-![editmodelnode](./images/editmodelnode.png) 
-To edit path attributes, click “Select Path” and choose the path you want to modify. The path connecting nodes will be displayed, and you can change path attributes accordingly. 
-![editmodelpath](./images/editmodelpath.png) 
-To create a new node, click Select Location and then click on the desired position in the cardiac conduction model where you want to place the node. After placing the node, you can assign its attributes by selecting from the drop-down menu of preset node types.
-To delete an existing node, click "Select Node for deletion" and then select the node from the system you want to remove.
-![editmodelnodecreate](./images/editmodelnodecreate.png) 
-To create a new path, click Select Node 1 and choose the starting node of the path. Then click Select Node 2 and select the ending node. After defining the path, assign its attributes using the Path Preset drop-down menu.
-To delete an existing path, click Select Path for Deletion and select the path you want to remove from the model.
-![editmodelpathcreate](./images/editmodelpathcreate.png) 
-After editing the model, you can save it. You will then be redirected to the [Closed-Loop Validation Platform System](#close_gui_with_current_settings)
+<p align="center">
+  <img src="./images/editmodelnetwork.png" alt="editmodelnetwork" width="60%">
+</p> 
 
-**Tutorial** -  Explore guided examples 
+To edit node attributes, <br> Click “Select Node” and choose the node you want to modify. The node type will be displayed, and you can change its attributes accordingly. After updating or resetting the values, you can view the node’s action potential and compare it with the default node’s action potential.
+
+<p align="center">
+  <img src="./images/editmodelnode.png" alt="editmodelnode" width="50%">
+</p> 
+
+To edit path attributes, <br> Click “Select Path” and choose the path you want to modify. The path connecting nodes will be displayed, and you can change path attributes accordingly. 
+
+<p align="center">
+  <img src="./images/editmodelpath.png" alt="editmodelpath" width="60%">
+</p> 
+
+To create a new node, <br> Click Select Location and then click on the desired position in the cardiac conduction model where you want to place the node. After placing the node, you can assign its attributes by selecting from the drop-down menu of preset node types.
+To delete an existing node, click "Select Node for deletion" and then select the node from the system you want to remove.
+
+<p align="center">
+  <img src="./images/editmodelnodecreate.png" alt="editmodelnodecreate" width="60%">
+</p>
+
+To create a new path, <br> Click Select Node 1 and choose the starting node of the path. Then click Select Node 2 and select the ending node. After defining the path, assign its attributes using the Path Preset drop-down menu.
+To delete an existing path, click Select Path for Deletion and select the path you want to remove from the model.
+
+<p align="center">
+  <img src="./images/editmodelpathcreate.png" alt="editmodelpathcreate" width="60%">
+</p>
+
+After editing the model, <br> You can save it and it will then be redirected to the [Closed-Loop Validation Platform System](#close_gui_with_current_settings).
+
 	     
 **5. Build a new heart model**           
 
@@ -460,5 +507,3 @@ To build a new heart model, update the Excel configuration file (nodes, paths, p
 Version 1 is posted on the public GitHub repository. Copyright 2019 Weiwei Ai, wai484@aucklanduni.ac.nz, The University of Auckland, under license GPL version 
 * July 29, 2025  
 Change the license to Apache-2.0
-
-
