@@ -308,10 +308,9 @@ Pacemaker cells can initiate action potentials without external stimulation.
 ```
 2.Once the simulation finishes, click the scope to view the output trace. 
 	
-
-<div style="display: flex; justify-content: center; gap: 20px; align-items: center;">
+<p align="center">
   <img src="./images/SA_AP.png" alt="SA_AP" width="60%">
-</div>
+</p>
 
 **2. Overdrive suppression simulation**
 
@@ -398,11 +397,10 @@ After setting the model and pacemaker options, you can select one of the followi
 - [Edit Model Network](#edit-model-network)
    
 
-<p align="center"> 
-  <video width="900%" controls>
-    <source src="./images/closedloopvalidationplatformV.mp4" type="video/mp4">
-     </video>
-</p>
+***Click the image to play the simulation.***
+[![Simulation](./images/video_thumbnail.png)](./images/closedloopvalidationplatformV.mp4)
+
+
 
 **Close GUI with Current Settings** 
 
@@ -469,19 +467,25 @@ To build a new heart model, update the Excel configuration file (nodes, paths, p
 
 ## References
 
- **Pacemaker cell models**:  
+ **Pacemaker cell models**:     
 [1] Ai, Weiwei, et al. "A parametric computational model of the action potential of pacemaker cells." IEEE Transactions on Biomedical Engineering 65.1 (2017): 123-130.  
+<br>
 **Cardiomyocytes**:     
 [2] Yip, Eugene, et al. "Towards the emulation of the cardiac conduction system for pacemaker validation." ACM Transactions on Cyber-Physical Systems 2.4 (2018): 32.  
+<br>
 **Cardiac conduction system**:  
 [3] Ai, Weiwei, et al. "Cardiac electrical modeling for closed-loop validation of implantable devices." IEEE Transactions on Biomedical Engineering 67.2 (2019): 536-544.  
+<br>
 **EGM generation**:     
 [4] Ai, Weiwei, et al. "An intracardiac electrogram model to bridge virtual hearts and implantable cardiac devices." 2017 39th Annual International Conference of the IEEE Engineering in Medicine and Biology Society (EMBC). IEEE, 2017.  
+<br>
 **Closed loop validation**:     
 [5] Ai, Weiwei, et al. "Closing the loop: Validation of implantable cardiac devices with computational heart models." IEEE journal of biomedical and health informatics 24.6 (2019): 1579-1588.  
+<br>
 **C code generation and implementation**:   
 [6] Allen, Nathan, et al. "Modular code generation for emulating the electrical conduction system of the human heart." Proceedings of the 2016 Conference on Design, Automation & Test in Europe. EDA Consortium, 2016.  
 [7] Malik, Avinash, et al. "Modular compilation of hybrid systems for emulation and large scale simulation." ACM Transactions on Embedded Computing Systems (TECS) 16.5s (2017): 118.  
+<br>
 **Other foundational work**:    
 [8] Ye, Pei, et al. "Modelling excitable cells using cycle-linear hybrid automata." IET systems biology 2.1 (2008): 24-32.  
 [9] Chen, Taolue, et al. "Quantitative verification of implantable cardiac pacemakers over hybrid heart models." Information and Computation 236 (2014): 87-101.  
